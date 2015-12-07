@@ -3,6 +3,20 @@
 (defconstant empty 0)
 
 (defvar grid ())
+(defvar col)
+(defvar row)
+(defvar val)
+(defparameter *hash-let-to-num* (make-hash-table))
+(setf (gethash 'A *hash-let-to-num*) 0)
+(setf (gethash 'B *hash-let-to-num*) 1)
+(setf (gethash 'C *hash-let-to-num*) 2)
+(setf (gethash 'D *hash-let-to-num*) 3)
+(setf (gethash 'E *hash-let-to-num*) 4)
+(setf (gethash 'F *hash-let-to-num*) 5)
+(setf (gethash 'G *hash-let-to-num*) 6)
+(setf (gethash 'H *hash-let-to-num*) 7)
+(setf (gethash 'I *hash-let-to-num*) 8)
+
 
 ;;Remplacer la grille en dur par l'input
 (defun sudoku(input)
@@ -16,7 +30,14 @@
                  (0 0 7 2 0 6 9 0 0)
                  (0 4 0 5 0 8 0 7 0)))
   (print-board)
-  
+  (princ "Enter column : ")
+  (setq col (read))
+  (princ "Enter row : ")
+  (setq row (read))
+  (princ "Enter value : ")
+  (setq val (read))
+  (setf (aref grid row col) val)
+  (print-board)
 )
 
 (defun print-board ()
