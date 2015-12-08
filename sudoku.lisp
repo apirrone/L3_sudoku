@@ -6,6 +6,9 @@
 (defvar col)
 (defvar row)
 (defvar val)
+
+;;Par soucis de practicité lors des entrées,
+;; on associe aux colonnes une lettre
 (defparameter *hash-let-to-num* (make-hash-table))
 (setf (gethash 'A *hash-let-to-num*) 0)
 (setf (gethash 'B *hash-let-to-num*) 1)
@@ -29,15 +32,23 @@
                  (5 0 0 0 0 0 0 0 2)
                  (0 0 7 2 0 6 9 0 0)
                  (0 4 0 5 0 8 0 7 0)))
+  (game-loop)
+
+)
+
+(defun game-loop()
   (print-board)
   (princ "Enter column : ")
-  (setq col (read))
+  (setq col (gethash (read) *hash-let-to-num* ))
   (princ "Enter row : ")
   (setq row (read))
-  (princ "Enter value : ")
-  (setq val (read))
-  (setf (aref grid row col) val)
-  (print-board)
+  (if (= 0 (aref grid row col))
+      (progn (princ "Enter value : ")
+       (setq val (read))
+       (setf (aref grid row col) val))
+      (princ "Erreur, Case non vide"))
+  ;;definir condition d'arret
+  (game-loop)
 )
 
 (defun print-board ()
@@ -46,7 +57,9 @@
     (format t "~%---+---+---+---+---+---+---+---+---+---+~%")
     (format t " ~a |" r)
     (dotimes (c grid-size)
-      (format t " ~A |" (aref grid r c))))
+      (if (= 0 (aref grid r c))
+	  (format t "   |")
+	  (format t " ~A |" (aref grid r c)))))
   (format t "~%---+---+---+---+---+---+---+---+---+---+~%~%")
 )
 
