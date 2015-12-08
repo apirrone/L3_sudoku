@@ -37,29 +37,58 @@
 )
 
 (defun game-loop()
-  (print-board)
+  (print-board grid)
   (princ "Enter column : ")
   (setq col (gethash (read) *hash-let-to-num* ))
+  ;;rajouter test validité de la colonne
   (princ "Enter row : ")
   (setq row (read))
+  ;;rajouter test validité de la ligne
   (if (= 0 (aref grid row col))
       (progn (princ "Enter value : ")
        (setq val (read))
-       (setf (aref grid row col) val))
-      (princ "Erreur, Case non vide"))
+       (let (g-temp)
+	 (setf g-temp grid)
+	 (setf (aref g-temp row col) val)
+	 (if (/= 0 (check-grid g-temp))
+	     (setf (aref grid row col) val)
+	     (format t "Erreur, vous ne pouvez pas jouer cela ici"))
+       )
+      )
+      (princ "Erreur, Case non vide")
+  )
   ;;definir condition d'arret
   (game-loop)
 )
 
-(defun print-board ()
+(defun check-grid(g)
+  ;;check lines
+  (let ((tempList '())
+	(nb 0))
+    (dotimes (r grid-size)
+      (dotimes (c grid-size)
+	(if (/= 0 (aref g r c ))
+	    (push (aref g r c) tempList))))
+    (setq nb (length tempList))
+    (setq tempList (remove-duplicates tempList))
+    (if (> nb (length tempList))
+	0
+	1
+    )
+  )
+      
+      
+)
+
+(defun print-board (g)
   (format t "~%   | A | B | C | D | E | F | G | H | I |")
   (dotimes (r grid-size)
     (format t "~%---+---+---+---+---+---+---+---+---+---+~%")
     (format t " ~a |" r)
     (dotimes (c grid-size)
-      (if (= 0 (aref grid r c))
+      (if (= 0 (aref g r c))
 	  (format t "   |")
-	  (format t " ~A |" (aref grid r c)))))
+	  (format t " ~A |" (aref g r c)))))
   (format t "~%---+---+---+---+---+---+---+---+---+---+~%~%")
 )
 
