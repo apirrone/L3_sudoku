@@ -48,6 +48,35 @@
   (game-loop)
 )
 
+(defun game-loop()
+   (princ "Enter column : ")
+   (setq col (gethash (read) *hash-let-to-num* ))
+   ;;rajouter test validité de la colonne
+   (princ "Enter row : ")
+   (setq row (read))
+   ;;rajouter test validité de la ligne
+   (if (= 0 (aref grid row col))
+       (progn (princ "Enter value : ")
+        (setq val (read))
+	(copy-grid grid g-temp)
+	(setf (aref g-temp row col) val)
+	(check-grid g-temp row col val)
+       )
+       (princ "Erreur, Case non vide"))
+   ;;definir condition d'arret
+   (print-board grid)
+   (game-loop)
+ )
+
+(defun copy-grid(source dest)
+  (dotimes (r grid-size)
+    (dotimes (c grid-size)
+      (setf (aref dest r c) (aref source r c))
+    )
+  )
+)
+
+
 (defun check-grid (g row col val)
 
   ;;check lines
