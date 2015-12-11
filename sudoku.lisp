@@ -62,7 +62,11 @@
 	(setf (aref g-temp row col) val)
 	(check-grid g-temp row col val)
        )
-       (princ "Erreur, Case non vide"))
+       (progn (princ "Case non vide, effacement de la case")
+	      (setq val 0)
+	      (copy-grid grid g-temp)
+	      (setf (aref g-temp row col) val)
+	      (check-grid g-temp row col val)))
    ;;definir condition d'arret
    (print-board grid)
    (game-loop)
